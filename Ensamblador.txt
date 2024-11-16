@@ -1,0 +1,601 @@
+char data[26];
+int bits_obt;
+
+void setup() {
+  Serial.begin(9600);
+  Serial.println("En línea, esperando instrucciones...");
+
+  // Configurar los pines del display como salida
+  for (int i = 2; i <= 8; i++) {
+    pinMode(i, OUTPUT);
+    digitalWrite(i, LOW); // Asegurarse de que los pines estén inicialmente apagados
+  }
+}
+
+void loop() {
+  while (Serial.available()) {
+    bits_obt = Serial.readBytesUntil(13, data, 25); // Leer bytes hasta <CR> (13). Guardar en data.
+    data[bits_obt] = 0; // Añadir un terminador nulo al final de la cadena
+    Serial.print(data[0]); Serial.println(data[1]);
+
+    // Comprobación de comando SUM
+    if (strcmp(data, "SUM") == 0) {
+      int a = 0, b = 0, r = 0;
+      String input = "";
+
+      // Solicitar el primer número
+      Serial.println("Dame un número y presiona Enter:");
+      while (true) {
+        if (Serial.available()) {
+          char c = Serial.read();
+          if (c == '\r') { // Detecta Enter
+            break;
+          } else {
+            input += c; // Agrega el carácter a la cadena
+          }
+        }
+      }
+      a = input.toInt(); // Convertir la cadena a un número
+      Serial.println(a);
+
+      input = ""; // Reiniciar el valor de la cadena
+
+      // Solicitar el segundo número
+      Serial.println("Dame OTRO número y presiona Enter:");
+      while (true) {
+        if (Serial.available()) {
+          char c = Serial.read();
+          if (c == '\r') { // Detecta Enter
+            break;
+          } else {
+            input += c; // Agrega el carácter a la cadena
+          }
+        }
+      }
+      b = input.toInt();
+      Serial.println(b);
+
+      // Realizar la suma
+      r = a + b;
+
+      Serial.println("El resultado es");
+      Serial.println(r);
+      Serial.println("Suma realizada");
+
+      // Mostrar el resultado en el display
+      Numero_Display(r);
+    }
+
+    // Comprobación de comando DIV
+    if (strcmp(data, "DIV") == 0) {
+      int a = 0, b = 0, r = 0;
+      String input = "";
+
+      // Solicitar el primer número
+      Serial.println("Dame un número y presiona Enter:");
+      while (true) {
+        if (Serial.available()) {
+          char c = Serial.read();
+          if (c == '\r') { // Detecta Enter
+            break;
+          } else {
+            input += c; // Agrega el carácter a la cadena
+          }
+        }
+      }
+      a = input.toInt(); // Convertir la cadena a un número
+      Serial.println(a);
+      input = ""; // Reiniciar el valor de la cadena
+
+      // Solicitar el segundo número
+      Serial.println("Dame OTRO número y presiona Enter:");
+      while (true) {
+        if (Serial.available()) {
+          char c = Serial.read();
+          if (c == '\r') { // Detecta Enter
+            break;
+          } else {
+            input += c; // Agrega el carácter a la cadena
+          }
+        }
+      }
+      
+      b = input.toInt();
+      Serial.println(b);
+      // Realizar la DIVISION
+      // Verificar si el divisor es 0 para evitar la división por cero
+  if (b == 0) {
+    Serial.println("Error: División por cero no permitida.");
+    Serial.println("Error: INTENTA CAMBIAR EL VALOR NUMERO 2");
+    r = 0; // Opcional: Puedes asignar un valor específico como resultado
+  } else {
+    // Realizar la DIVISION
+    r = a / b;
+    Serial.println("El resultado es:");
+    Serial.println(r);
+    Serial.println("DIVISION realizada");
+  }
+    
+      // Mostrar el resultado en el display
+      Numero_Display(r);
+    }
+
+    // Comprobación de comando RESTA
+    if (strcmp(data, "RES") == 0) {
+      int a = 0, b = 0, r = 0;
+      String input = "";
+
+      // Solicitar el primer número
+      Serial.println("Dame un número y presiona Enter:");
+      while (true) {
+        if (Serial.available()) {
+          char c = Serial.read();
+          if (c == '\r') { // Detecta Enter
+            break;
+          } else {
+            input += c; // Agrega el carácter a la cadena
+          }
+        }
+      }
+      a = input.toInt(); // Convertir la cadena a un número
+      Serial.println(a);
+      input = ""; // Reiniciar el valor de la cadena
+
+      // Solicitar el segundo número
+      Serial.println("Dame OTRO número y presiona Enter:");
+      while (true) {
+        if (Serial.available()) {
+          char c = Serial.read();
+          if (c == '\r') { 
+            break;
+          } else {
+            input += c; 
+          }
+        }
+      }
+      b = input.toInt();
+      Serial.println(b);
+      // Realizar la resta
+      r = a - b;
+      Serial.println("El resultado es");
+      Serial.println(r);
+      Serial.println("RESTA realizada");
+
+      // Mostrar el resultado en el display
+      Numero_Display(r);
+    }
+
+    // Comprobación de comando MULTIPLICACION
+    if (strcmp(data, "MUL") == 0) {
+      int a = 0, b = 0, r = 0;
+      String input = "";
+
+      // Solicitar el primer número
+      Serial.println("Dame un número y presiona Enter:");
+      while (true) {
+        if (Serial.available()) {
+          char c = Serial.read();
+          if (c == '\r') { // Detecta Enter
+            break;
+          } else {
+            input += c; // Agrega el carácter a la cadena
+          }
+        }
+      }
+      a = input.toInt(); // Convertir la cadena a un número
+      Serial.println(a);
+      input = ""; // Reiniciar el valor de la cadena
+
+      // Solicitar el segundo número
+      Serial.println("Dame OTRO número y presiona Enter:");
+      while (true) {
+        if (Serial.available()) {
+          char c = Serial.read();
+          if (c == '\r') { 
+            break;
+          } else {
+            input += c; 
+          }
+        }
+      }
+      b = input.toInt();
+      Serial.println(b);
+      // Realizar la MULTLIPICACION
+      r = a * b;
+      Serial.println("El resultado es");
+      Serial.println(r);
+      Serial.println("MULTIPLICACION realizada");
+
+      // Mostrar el resultado en el display
+      Numero_Display(r);
+    }
+
+    // Comprobación de comando AND
+    if (strcmp(data, "AND") == 0) {
+      int a = 0, b = 0, r = 0;
+      String input = "";
+
+      // Solicitar el primer número
+      Serial.println("Dame un número y presiona Enter:");
+      while (true) {
+        if (Serial.available()) {
+          char c = Serial.read();
+          if (c == '\r') { // Detecta Enter
+            break;
+          } else {
+            input += c; // Agrega el carácter a la cadena
+          }
+        }
+      }
+      a = input.toInt(); // Convertir la cadena a un número
+      Serial.println(a);
+      input = ""; // Reiniciar el valor de la cadena
+
+      // Solicitar el segundo número
+      Serial.println("Dame OTRO número y presiona Enter:");
+      while (true) {
+        if (Serial.available()) {
+          char c = Serial.read();
+          if (c == '\r') { 
+            break;
+          } else {
+            input += c; 
+          }
+        }
+      }
+      b = input.toInt();
+      Serial.println(b);
+      // Realizar la MULTLIPICACION
+      r = a && b;
+      Serial.println("El resultado es");
+      Serial.println(r);
+      Serial.println("AND realizado");
+
+      // Mostrar el resultado en el display
+      Numero_Display(r);
+    }
+
+    // Comprobación de comando OR
+    if (strcmp(data, "OR") == 0) {
+      int a = 0, b = 0, r = 0;
+      String input = "";
+
+      // Solicitar el primer número
+      Serial.println("Dame un número y presiona Enter:");
+      while (true) {
+        if (Serial.available()) {
+          char c = Serial.read();
+          if (c == '\r') { // Detecta Enter
+            break;
+          } else {
+            input += c; // Agrega el carácter a la cadena
+          }
+        }
+      }
+      a = input.toInt(); // Convertir la cadena a un número
+      Serial.println(a);
+      input = ""; // Reiniciar el valor de la cadena
+
+      // Solicitar el segundo número
+      Serial.println("Dame OTRO número y presiona Enter:");
+      while (true) {
+        if (Serial.available()) {
+          char c = Serial.read();
+          if (c == '\r') { 
+            break;
+          } else {
+            input += c; 
+          }
+        }
+      }
+      b = input.toInt();
+      Serial.println(b);
+      // Realizar la MULTLIPICACION
+      r = a || b;
+      Serial.println("El resultado es");
+      Serial.println(r);
+      Serial.println("OR realizado");
+
+      // Mostrar el resultado en el display
+      Numero_Display(r);
+    }
+
+    // Comprobación de comando NOT
+    if (strcmp(data, "NOT") == 0) {
+      int a = 0, b = 0, r = 0;
+      String input = "";
+
+      // Solicitar el primer número
+      Serial.println("Dame un número y presiona Enter:");
+      while (true) {
+        if (Serial.available()) {
+          char c = Serial.read();
+          if (c == '\r') { // Detecta Enter
+            break;
+          } else {
+            input += c; // Agrega el carácter a la cadena
+          }
+        }
+      }
+      a = input.toInt(); // Convertir la cadena a un número
+      Serial.println(a);
+      input = ""; // Reiniciar el valor de la cadena
+
+      // Realizar la MULTLIPICACION
+      r = !a;
+      Serial.println("El resultado es");
+      Serial.println(r);
+      Serial.println("NOT realizado");
+
+      // Mostrar el resultado en el display
+      Numero_Display(r);
+    }
+    // Comprobación de comando NAND
+    if (strcmp(data, "NAN") == 0) {
+      int a = 0, b = 0, r = 0;
+      String input = "";
+
+      // Solicitar el primer número
+      Serial.println("Dame un número y presiona Enter:");
+      while (true) {
+        if (Serial.available()) {
+          char c = Serial.read();
+          if (c == '\r') { // Detecta Enter
+            break;
+          } else {
+            input += c; // Agrega el carácter a la cadena
+          }
+        }
+      }
+      a = input.toInt(); // Convertir la cadena a un número
+      Serial.println(a);
+      input = ""; // Reiniciar el valor de la cadena
+
+      // Solicitar el segundo número
+      Serial.println("Dame OTRO número y presiona Enter:");
+      while (true) {
+        if (Serial.available()) {
+          char c = Serial.read();
+          if (c == '\r') { 
+            break;
+          } else {
+            input += c; 
+          }
+        }
+      }
+      b = input.toInt();
+      Serial.println(b);
+      // Realizar la MULTLIPICACION
+      r = !(a && b);
+      Serial.println("El resultado es");
+      Serial.println(r);
+      Serial.println("NAND realizado");
+
+      // Mostrar el resultado en el display
+      Numero_Display(r);
+    }
+        // Comprobación de comando NOR
+    if (strcmp(data, "NOR") == 0) {
+      int a = 0, b = 0, r = 0;
+      String input = "";
+
+      // Solicitar el primer número
+      Serial.println("Dame un número y presiona Enter:");
+      while (true) {
+        if (Serial.available()) {
+          char c = Serial.read();
+          if (c == '\r') { // Detecta Enter
+            break;
+          } else {
+            input += c; // Agrega el carácter a la cadena
+          }
+        }
+      }
+      a = input.toInt(); // Convertir la cadena a un número
+      Serial.println(a);
+      input = ""; // Reiniciar el valor de la cadena
+
+      // Solicitar el segundo número
+      Serial.println("Dame OTRO número y presiona Enter:");
+      while (true) {
+        if (Serial.available()) {
+          char c = Serial.read();
+          if (c == '\r') { 
+            break;
+          } else {
+            input += c; 
+          }
+        }
+      }
+      b = input.toInt();
+      Serial.println(b);
+      r = !(a || b);
+      Serial.println("El resultado es");
+      Serial.println(r);
+      Serial.println("NOR realizado");
+
+      // Mostrar el resultado en el display
+      Numero_Display(r);
+    }
+
+    // Comprobación de comando XOR
+    if (strcmp(data, "XOR") == 0) {
+      int a = 0, b = 0, r = 0;
+      String input = "";
+
+      // Solicitar el primer número
+      Serial.println("Dame un número y presiona Enter:");
+      while (true) {
+        if (Serial.available()) {
+          char c = Serial.read();
+          if (c == '\r') { // Detecta Enter
+            break;
+          } else {
+            input += c; // Agrega el carácter a la cadena
+          }
+        }
+      }
+      a = input.toInt(); // Convertir la cadena a un número
+      Serial.println(a);
+      input = ""; // Reiniciar el valor de la cadena
+
+      // Solicitar el segundo número
+      Serial.println("Dame OTRO número y presiona Enter:");
+      while (true) {
+        if (Serial.available()) {
+          char c = Serial.read();
+          if (c == '\r') { 
+            break;
+          } else {
+            input += c; 
+          }
+        }
+      }
+      b = input.toInt();
+      Serial.println(b);
+      // Realizar la MULTLIPICACION
+      r = a ^ b;
+      Serial.println("El resultado es");
+      Serial.println(r);
+      Serial.println("XOR realizado");
+
+      // Mostrar el resultado en el display
+      Numero_Display(r);
+    }
+
+    // Comprobación de comando XOR
+    if (strcmp(data, "XNO") == 0) {
+      int a = 0, b = 0, r = 0;
+      String input = "";
+
+      // Solicitar el primer número
+      Serial.println("Dame un número y presiona Enter:");
+      while (true) {
+        if (Serial.available()) {
+          char c = Serial.read();
+          if (c == '\r') { // Detecta Enter
+            break;
+          } else {
+            input += c; // Agrega el carácter a la cadena
+          }
+        }
+      }
+      a = input.toInt(); // Convertir la cadena a un número
+      Serial.println(a);
+      input = ""; // Reiniciar el valor de la cadena
+
+      // Solicitar el segundo número
+      Serial.println("Dame OTRO número y presiona Enter:");
+      while (true) {
+        if (Serial.available()) {
+          char c = Serial.read();
+          if (c == '\r') { 
+            break;
+          } else {
+            input += c; 
+          }
+        }
+      }
+      b = input.toInt();
+      Serial.println(b);
+      // Realizar la MULTLIPICACION
+      r = !(a ^ b);
+      Serial.println("El resultado es");
+      Serial.println(r);
+      Serial.println("XNOR realizado");
+
+      // Mostrar el resultado en el display
+      Numero_Display(r);
+    }
+  }
+}
+
+// Función para mostrar el número en el display de 7 segmentos
+void Numero_Display(int variable) {
+  // Apagar todos los segmentos al inicio
+  for (int i = 2; i <= 8; i++) {
+    digitalWrite(i, LOW);
+  }
+
+  switch (variable) {
+    case -1:
+      digitalWrite(3, HIGH);digitalWrite(4, HIGH);digitalWrite(8, HIGH);
+      break;
+    case 0:
+      digitalWrite(2, HIGH); digitalWrite(3, HIGH); digitalWrite(4, HIGH);
+      digitalWrite(5, HIGH); digitalWrite(6, HIGH); digitalWrite(7, HIGH);
+      break;
+    case 1:
+      digitalWrite(3, HIGH); digitalWrite(4, HIGH);
+      break;
+    case 2:
+      digitalWrite(2, HIGH); digitalWrite(3, HIGH); digitalWrite(8, HIGH);
+      digitalWrite(6, HIGH); digitalWrite(5, HIGH);
+      break;
+    case 3:
+      digitalWrite(2, HIGH); digitalWrite(3, HIGH); digitalWrite(4, HIGH);
+      digitalWrite(8, HIGH); digitalWrite(5, HIGH);
+      break;
+    case 4:
+      digitalWrite(7, HIGH); digitalWrite(8, HIGH); digitalWrite(3, HIGH);
+      digitalWrite(4, HIGH);
+      break;
+    case 5:
+      digitalWrite(2, HIGH); digitalWrite(7, HIGH); digitalWrite(8, HIGH);
+      digitalWrite(4, HIGH); digitalWrite(5, HIGH);
+      break;
+    case 6:
+      digitalWrite(2, HIGH); digitalWrite(7, HIGH); digitalWrite(6, HIGH);
+      digitalWrite(5, HIGH); digitalWrite(4, HIGH); digitalWrite(8, HIGH);
+      break;
+    case 7:
+      digitalWrite(2, HIGH); digitalWrite(3, HIGH); digitalWrite(4, HIGH);
+      break;
+    case 8:
+      digitalWrite(2, HIGH); digitalWrite(3, HIGH); digitalWrite(4, HIGH);
+      digitalWrite(6, HIGH); digitalWrite(8, HIGH); digitalWrite(7, HIGH);
+      digitalWrite(5, HIGH);
+      break;
+    case 9:
+      digitalWrite(2, HIGH); digitalWrite(3, HIGH); digitalWrite(4, HIGH);
+      digitalWrite(8, HIGH); digitalWrite(7, HIGH); digitalWrite(5, HIGH);
+      break;
+      //A
+    case 10:
+      digitalWrite(2, HIGH); digitalWrite(3, HIGH); digitalWrite(4, HIGH);
+      digitalWrite(8, HIGH); digitalWrite(7, HIGH); digitalWrite(6, HIGH);
+      break;
+      //B
+    case 11:
+      digitalWrite(4, HIGH);digitalWrite(5, HIGH);
+      digitalWrite(8, HIGH); digitalWrite(7, HIGH); digitalWrite(6, HIGH);
+      break;
+      //C
+    case 12:
+      digitalWrite(2, HIGH); digitalWrite(5, HIGH);
+      digitalWrite(7, HIGH); digitalWrite(6, HIGH);
+      break;
+      //D
+    case 13:
+      digitalWrite(3, HIGH); digitalWrite(4, HIGH);digitalWrite(8, HIGH);
+      digitalWrite(5, HIGH); digitalWrite(6, HIGH);
+      break;
+      //E
+    case 14:
+      digitalWrite(2, HIGH); digitalWrite(5, HIGH); digitalWrite(6, HIGH);
+      digitalWrite(8, HIGH);digitalWrite(7, HIGH);
+      break;
+      //F
+    case 15:
+      digitalWrite(2, HIGH); 
+      digitalWrite(8, HIGH); digitalWrite(7, HIGH); digitalWrite(6, HIGH);
+      break;
+    default:
+    
+      // Apagar todos los segmentos si el valor no es válido
+      for (int i = 2; i <= 8; i++) {
+        digitalWrite(i, LOW);
+      }
+      break;
+  }
+}
